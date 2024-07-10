@@ -12,8 +12,12 @@ const Home = () => {
 	const getAllCharacters = () => {
 		fetch("https://rickandmortyapi.com/api/character")
 			.then((response) => {
-				if (!response.ok) throw Error(response.statusText);
-				return response.json();})
+				if(response.status === 200) {
+					return response.json()
+				} else {
+					throw Error(response.statusText);
+				}
+			})
 			.then((data) => setAllCharacters(data.results))
 			.catch((error) => console.log(error));
 	}
@@ -32,14 +36,19 @@ const Home = () => {
     // }, [allCharacters]);
 
 	return (
-		<div className="container">
-			
-			{allCharacters.length > 0 && (
-				allCharacters.map((element, index) => (
-					<CharacterCard key={index} name={element.name} image={element.image} />)
-				))
-			}
-                
+		<div className="container overflow-hidden">
+			<div className="row gy-5 mt-5">
+					{/* map del array allCharacters */}
+					{allCharacters.length > 0 && (
+						allCharacters.map((element, index) => (
+							<div className="col-12 col-sm-6 col-md-4 col-lg-3">
+							<CharacterCard key={index} name={element.name} image={element.image} />
+							</div>
+							)
+						)
+					)
+					}				
+			</div>
 		</div>
 	);
 };
